@@ -5,9 +5,16 @@ CREATE TABLE customers (
     firstName VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
     telephone VARCHAR(20),
+    boatId INT NOT NULL,
+    passwordHash VARCHAR(255) NOT NULL
+);
+
+-- Create Boats Table
+CREATE TABLE boats (
+    boatId INT PRIMARY KEY AUTO_INCREMENT,
     boatName VARCHAR(100),
     boatLength INT,
-    passwordHash VARCHAR(255) NOT NULL
+    slipId INT NOT NULL
 );
 
 -- Create Slips Table
