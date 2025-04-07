@@ -39,7 +39,7 @@ CREATE TABLE reservations (
 CREATE TABLE waitlist (
     waitListId INT PRIMARY KEY AUTO_INCREMENT,
     customerId INT NOT NULL,
-    slipSize INT NOT NULL,
+    slipId INT NOT NULL,
     waitListDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
 );
