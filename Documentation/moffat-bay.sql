@@ -1,3 +1,11 @@
+--Database queries
+-- Create the database (if it doesn't exist)
+CREATE DATABASE IF NOT EXISTS moffat_bay_marina;
+
+-- Use the database
+USE moffat_bay_marina;
+
+
 -- Create Customers Table
 CREATE TABLE customers (
     customerId INT PRIMARY KEY AUTO_INCREMENT,
@@ -43,3 +51,34 @@ CREATE TABLE waitlist (
     waitListDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customerId) REFERENCES customers(customerId) ON DELETE CASCADE
 );
+
+INSERT INTO customers (email, firstName, lastName, telephone, boatId, passwordHash) VALUES
+('bob@example.com', 'Bob', 'Smith', '555-123-4567', 1, '$2a$10$abcdefghijklmnopqrstuvwxYZ'), -- Example Hash
+('alice@example.com', 'Alice', 'Johnson', '555-987-6543', 3, '$2a$10$zyxwvutsrqponmlkjihgfedcBA'), -- Example Hash
+('charlie@example.com', 'Charlie', 'Brown', '555-111-2222', 2, '$2a$10$1234567890abcdefghijklMN'); -- Example Hash
+
+INSERT INTO slips (slipLength, available) VALUES
+(26, TRUE),
+(40, TRUE),
+(50, FALSE),
+(26, FALSE),
+(40, TRUE),
+(50, TRUE);
+
+INSERT INTO reservations (customerId, slipId, checkInDate) VALUES
+(1, 2, '2024-07-15'), -- Bob reserves slip 2 (40 ft)
+(2, 3, '2024-08-01'), -- Alice reserves slip 3 (50 ft)
+(3, 1, '2024-09-10'); -- Charlie reserves slip 1 (26 ft)
+
+INSERT INTO waitList (customerId, slipId) VALUES
+(1, 3), -- Bob is on the waitlist for a 50 ft slip
+(2, 4),  -- Alice is on the waitlist for a 26 ft slip
+(3, 2);  -- Charlie is on the waitlist for a 40 ft slip
+
+INSERT INTO boats (boatName, boatLength, slipId) VALUES
+("Saint Maria", 40, 2),
+("Al Monica", 26, 1),
+("Alice Mobile", 50, 3);
+
+
+
