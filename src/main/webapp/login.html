@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Moffat Bay Marina</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Login to Moffat Bay Marina</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <section>
+            <h2>Login</h2>
+            <form id="loginForm">
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required><br>
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required><br>
+                <button type="submit" class="button">Login</button>
+            </form>
+            <div id="errorMessage" style="color: red;"></div>
+        </section>
+    </main>
+    <footer>
+        <p>© 2025 Moffat Bay Marina</p>
+    </footer>
+
+    <script>
+        document.getElementById("loginForm").addEventListener("submit", async (event) => {
+            event.preventDefault(); // Prevent default form submission
+
+            const email = document.getElementById("email").value;
+            const password = document.getElementById("password").value;
+
+            try {
+                const response = await fetch("LoginServlet", {  //  Servlet URL
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+
+                if (response.ok) {
+                    // Login successful
+                    window.location.href = "reserve.html"; // Redirect to reservation page
+                } else {
+                    // Login failed
+                    const errorData = await response.json();
+                    document.getElementById("errorMessage").innerText = errorData.message;
+                }
+            } catch (error) {
+                console.error("Error:", error);
+                alert("Login failed!");
+            }
+        });
+    </script>
+</body>
+</html>
