@@ -34,13 +34,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare SQL statement to insert user data
-    $stmt = $conn->prepare("INSERT INTO customers (email, firstName, lastName, telephone, boatName, boatLength, passwordHash) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssssss", $email, $firstName, $lastName, $telephone, $boatName, $boatLength, $hashedPassword);
+    $slipID = "1";
+    $stmt = $conn->prepare("INSERT INTO boats (boatName, boatLength, slipId) VALUES (?, ?, ?)");
+    $stmt->bind_param("sss", $boatName, $boatLength, $slipID);
+    $stmt->execute();
+
+    $stmt = $conn->prepare("SELECT boatId FROM boats where boatName = ?");
+    $stmt->bind_param("s", $boatName);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    if ($row = $result->fetch_assoc()) {
+        $boatId = $row['boatId']; // This is your string value
+    }
+
+    $stmt = $conn->prepare("INSERT INTO customers (email, firstName, lastName, telephone, boatId, passwordHash) VALUES (?, ?, ?, ?, ?, ?)");
+    $stmt->bind_param("ssssss", $email, $firstName, $lastName, $telephone, $boatId, $hashedPassword);
 
     // Execute the query
     if ($stmt->execute()) {
-        // Redirect to login page on successful registration
-        header("Location: login.html?success=Registration successful!");
+        // Redirect to main page on successful registration
+        header("Location: index.html?success=Registration successful!");
         exit();
     } else {
         // Redirect back with an error message

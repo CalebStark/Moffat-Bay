@@ -1,6 +1,6 @@
-/* Reset base styles */
+/* Global Styles */
 * {
-    box-sizing: border-box;
+    /* box-sizing: border-box; */
     margin: 0;
     padding: 0;
 }
@@ -12,46 +12,19 @@ body {
     display: flex;
     flex-direction: column; 
 }
-
-.body-text {
-    text-align: center;
-    padding: 40px;
-    background-color: #fdf1e5;
-}
-  
-.body-text h2 {
-    font-size: 30px;
-    margin-bottom: 20px;
-}
-  
-.body-text p {
-    font-size: 18px;
-    line-height: 1.5;
-    color: #333;
-}
   
 h2 {
     color: #2327e8
 }
-  
-.footer {
-    background-color: #f29931;
-    color: white;
-    text-align: center;
-    padding: 20px;
-    font-size: 14px;
-}
-  
-.content {
-    flex: 1;
-}
 
 /* Header and navigation */
 header {
-    background-color: #2327e8;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #67c6ff;
     color: white;
-    padding: 1em 0;
-    text-align: center;
 }
 
 nav ul {
@@ -75,38 +48,20 @@ nav ul li {
     text-decoration: underline;
 }
 
-.search-bar {
-    display: flex;
-    justify-content: center;
-    padding: 10px;
-    background-color: #fdf1e5;
-  }
-  
-  .search-bar input {
-    width: 50%;
-    padding: 10px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-
-  .top-banner {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px;
-    background-color: #67c6ff;
-    color: white;
-  }
-  
-  .top-banner .logo img {
+.logo {
+    justify-self: left;
     height: 50px;
-  }
+}
+
+.logo-img {
+    height: 60px;
+}
+
 /* Main layout */
 main {
     padding: 20px;
-    max-width: 800px;
-    margin: 0 auto;
+    max-width: 100%;
+    margin: 0;
     background-color: #fcf1e4;
     padding-bottom: 5em;
     display: flex;
@@ -115,14 +70,32 @@ main {
     min-height: 100vh;
 }
 
+/* Default Styling for text sections */
+.body-text {
+    text-align: center;
+    padding: 40px;
+    background-color: #fdf1e5;
+}
+  
+.body-text h2 {
+    font-size: 30px;
+    margin-bottom: 20px;
+}
+  
+.body-text p {
+    font-size: 18px;
+    line-height: 1.5;
+    color: #333;
+}
+
 /* Form wrapper */
 .wrapper {
-    width: 100%;
-    max-width: 400px;
+    width: 60%;
 }
 
 /* Form styling */
 form {
+    min-width: 400px;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -160,11 +133,11 @@ form {
 
 /* Footer */
 footer {
-    background-color: #2327e8;
+    background-color: #f29931;
     color: white;
     text-align: center;
-    padding: 1em 0;
-    position: relative;
+    padding: 20px;
+    font-size: 14px;
 }
 
 .modal {
@@ -211,3 +184,4 @@ footer {
 .modal-footer button:hover {
     background-color: #333;
 }
+

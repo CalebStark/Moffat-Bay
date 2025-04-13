@@ -5,48 +5,62 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Register for Moffat Bay Marina</h1>
-        <nav>
-            <ul>
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Us</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
-                <li><a href="register.html">Register</a></li>
-                <li><a href="login.html">Login</a></li>
-            </ul>
+    <header class="top-banner">
+        <div class="logo">
+            <a href="index.html"><img class="logo-img" src="images/logo.PNG" alt="Logo if we're feeling fancy!"></a>
+        </div>
+        <nav class="nav-links">
+            <a href="index.html">Home Page</a>
+            <a href="reserve.html">Reserve a Slip</a>
+            <a href="waitlist.html">Wait List</a>
+            <a href="lookup.html">Reservation Lookup</a>
+            <a href="about.html">About Us</a>
+            <a href="contact.html">Contact Us</a>
+            <a href="login.html">Login</a>
         </nav>
-    </header>
+      </header>
     <main>
-        <section>
-            <h2>Create an Account</h2>
+        <section class="body-text, wrapper">
             <form action="register.php" method="POST">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" required><br>
+                <h1>Create an Account</h1>
+                <label for="email">Email:</label>
+                <div class="inputbox">
+                    <input type="email" id="email" name="email" placeholder="Email Address" required><br>
+                </div>
 
                 <label for="firstName">First Name:</label><br>
-                <input type="text" id="firstName" name="firstName" required><br>
+                <div class="inputbox">
+                    <input type="text" id="firstName" name="firstName" placeholder="First Name" required><br>
+                </div>
 
                 <label for="lastName">Last Name:</label><br>
-                <input type="text" id="lastName" name="lastName" required><br>
+                <div class="inputbox">
+                    <input type="text" id="lastName" name="lastName" placeholder="Last Name" required><br>
+                </div>
 
                 <label for="telephone">Telephone:</label><br>
-                <input type="tel" id="telephone" name="telephone" required><br>
+                <div class="inputbox">
+                    <input type="tel" id="telephone" name="telephone" placeholder="Telephone Number" required><br>
+                </div>
 
                 <label for="boatName">Boat Name:</label><br>
-                <input type="text" id="boatName" name="boatName" required><br>
+                <div class="inputbox">
+                    <input type="text" id="boatName" name="boatName" placeholder="Boat Name" required><br>
+                </div>
 
                 <label for="boatLength">Boat Length (feet):</label><br>
                 <select id="boatLength" name="boatLength" required>
                     <option value="26">26 ft</option>
                     <option value="40">40 ft</option>
                     <option value="50">50 ft</option>
-                </select><br>
+                </select>
 
                 <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password" required><br>
+                <div class="inputbox">
+                    <input type="password" id="password" name="password" placeholder="Password" required><br>
+                </div>
 
-                <button type="submit" class="button">Register</button>
+                <button type="submit" class="btn">Register</button>
             </form>
 
             <!-- Display error message from PHP if there is one -->

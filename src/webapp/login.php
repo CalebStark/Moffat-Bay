@@ -28,7 +28,7 @@ function checkLogin($email, $pass) {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT boatName, email, passwordHash FROM customers WHERE email = ?");
+    $stmt = $conn->prepare("SELECT email, passwordHash FROM customers WHERE email = ?");
     if (!$stmt) {
         throw new Exception("Prepare failed: " . $conn->error);
     }
@@ -40,7 +40,6 @@ function checkLogin($email, $pass) {
     if ($result && $result->num_rows === 1) {
         $row = $result->fetch_assoc();
         if (password_verify($pass, $row['passwordHash'])) {
-            $_SESSION['boatName'] = $row['boatName'];
             $_SESSION['email'] = $row['email'];
             $stmt->close();
             $conn->close();

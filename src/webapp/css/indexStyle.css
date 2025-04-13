@@ -15,3 +15,29 @@
     font-size: 40px;
     font-weight: bold;
 }
+
+.body-text .call-to-action {
+    padding: 50px;
+    display: flex;
+    justify-content: space-around;
+}
+
+.body-text .reserve-slip {
+    width: 40%;
+    max-height: 160px;
+    max-width: 400px;
+    justify-self: center;
+    border-radius: 25px;
+    border: 2px solid black;
+    background-color: #fcf1e4;
+}
+
+.body-text .about-us {
+    width: 40%;
+    max-height: 160px;
+    max-width: 400px;
+    justify-self: center;
+    border-radius: 25px;
+    border: 2px solid black;
+    background-color: #fcf1e4;
+}

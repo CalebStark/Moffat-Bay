@@ -12,20 +12,18 @@
   <!-- Top Banner -->
   <header class="top-banner">
     <div class="logo">
-      <img src="logo.png" alt="Logo if we're feeling fancy!">
+      <a href="index.html"><img class="logo-img" src="images/logo.PNG" alt="Logo if we're feeling fancy!"></a>
     </div>
     <nav class="nav-links">
       <a href="reserve.html">Reserve a Slip</a>
+      <a href="waitlist.html">Wait List</a>
+      <a href="lookup.html">Reservation Lookup</a>
       <a href="about.html">About Us</a>
+      <a href="contact.html">Contact Us</a>
       <a href="login.html">Login</a>
       <a href="register.html">Sign Up</a>
     </nav>
   </header>
-
-  <!-- Search Bar -->
-  <div class="search-bar">
-    <input type="text" placeholder="Search..." aria-label="Search">
-  </div>
 
   <!-- Picture with Flavor Text -->
   <section class="hero-image">
@@ -40,12 +38,71 @@
     <p>Moffat Bay is a beautiful marina, with people who're passionate about helping you enjoy your stay here.
         If you'd like to reserve a slip, you can reserve with us online!
     </p>
+    <div class="call-to-action">
+      <div class="reserve-slip">
+        <h3>Reserve a Slip</h3>
+        <p>Check out a slip reservation below and reserve yours now. <strong>Limited space available!</strong></p>
+        <a href="reserve.html"><strong>RESERVE NOW</strong></a>
+      </div>
+      <div class="about-us">
+        <h3>Learn More About Us</h3>
+        <p>Click below to learn more about the marina and the amenities you get access to by choose Moffat Bay Marina!</p>
+        <a href="about.html"><strong>About Us</strong></a>
+      </div>
+    </div>
   </section>
-
+      <!-- Error Modal -->
+      <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">Login Error</div>
+            <div class="modal-body" id="modalMessage">
+                <!-- Filled in dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">Try Again</button>
+            </div>
+        </div>
+      </div>
+  
+      <div class="modal" id="successModal">
+        <div class="modal-content">
+            <div class="modal-header">Registration Successful</div>
+            <div class="modal-body">
+                Welcome! You have successfully registered.
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">Close</button>
+            </div>
+        </div>
+      </div>
   <!-- Footer Section -->
   <footer class="footer">
     <p>2025 Capstone Moffat Bay. All Rights Reserved.</p>
   </footer>
+  
+  <script>
+    function closeModal() {
+        document.getElementById('errorModal').style.display = 'none';
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('error')) {
+            const msg = decodeURIComponent(params.get('error'));
+            document.getElementById('modalMessage').innerText = msg;
+            document.getElementById('errorModal').style.display = 'block';
+        } else if (params.has('success')) {
+            document.getElementById('successModal').style.display = 'block';
+            
+            // Redirect to homepage after 5 seconds
+            setTimeout(function () {
+                window.location.href = 'index.html'; //
+            }, 5000);
+        }
+    };
+</script>
 
 </body>
+
 </html>
