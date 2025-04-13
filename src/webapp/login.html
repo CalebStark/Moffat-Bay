@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Login - Moffat Bay Marina</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <h1>Login to Moffat Bay Marina</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="login.html">Login</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="wrapper">
+            <form id="loginForm" method="POST" action="login.php">
+                <h1>Login</h1>
+                <div class="inputbox">
+                    <input type="text" name="email" id="email" placeholder="Email" required>
+                </div>
+                <div class="inputbox">
+                    <input type="password" name="password" id="password" placeholder="Password" required>
+                </div>
+                <button type="submit" class="btn">Submit</button>
+            </form>
+        </div>
+    </main>
+
+    <!-- Error Modal -->
+    <div class="modal" id="errorModal">
+        <div class="modal-content">
+            <div class="modal-header">Login Error</div>
+            <div class="modal-body" id="modalMessage">
+                <!-- Filled in dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button onclick="closeModal()">Try Again</button>
+            </div>
+        </div>
+    </div>
+	
+	<div class="modal" id="successModal">
+		<div class="modal-content">
+			<div class="modal-header">Login Successful</div>
+			<div class="modal-body">
+            Welcome! You have successfully logged in.
+			</div>
+        <div class="modal-footer">
+            <button onclick="closeModal()">Close</button>
+        </div>
+    </div>
+</div>
+
+
+    <footer>
+        <p>© 2025 Moffat Bay Marina</p>
+    </footer>
+
+    <script>
+    function closeModal() {
+        document.getElementById('errorModal').style.display = 'none';
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('error')) {
+            const msg = decodeURIComponent(params.get('error'));
+            document.getElementById('modalMessage').innerText = msg;
+            document.getElementById('errorModal').style.display = 'block';
+        } else if (params.has('success')) {
+            document.getElementById('successModal').style.display = 'block';
+            
+            // Redirect to homepage after 2 seconds
+            setTimeout(function () {
+                window.location.href = 'index.html'; //
+            }, 2000);
+        }
+    };
+</script>
+
+</body>
+</html>
+

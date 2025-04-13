@@ -1,0 +1,17 @@
+.hero-image {
+    position: relative;
+    width: 100%;
+    height: 400px; 
+    background-image: url('https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fwww.marinareservation.com%2Farticles%2Fwp-content%2Fuploads%2F2019%2F06%2Flargest-and-biggest-marinas.jpg&f=1&nofb=1&ipt=0c6280093bb9f189ee1e85556b8c26fbaf3f0e5208facd9393423aee938b79e1');
+    background-size: cover;
+    background-position: center;
+}
+  
+.hero-text {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}

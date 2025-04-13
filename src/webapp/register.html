@@ -20,7 +20,7 @@
     <main>
         <section>
             <h2>Create an Account</h2>
-            <form id="registrationForm">
+            <form action="register.php" method="POST">
                 <label for="email">Email:</label><br>
                 <input type="email" id="email" name="email" required><br>
 
@@ -48,44 +48,17 @@
 
                 <button type="submit" class="button">Register</button>
             </form>
-              <div id="errorMessage" style="color: red;"></div>
+
+            <!-- Display error message from PHP if there is one -->
+            <?php if (isset($_GET['error'])): ?>
+                <div id="errorMessage" style="color: red;">
+                    <?php echo htmlspecialchars($_GET['error']); ?>
+                </div>
+            <?php endif; ?>
         </section>
     </main>
     <footer>
         <p>© 2025 Moffat Bay Marina</p>
     </footer>
-    <script>
-        document.getElementById("registrationForm").addEventListener("submit", async (event) => {
-            event.preventDefault();
-
-            const email = document.getElementById("email").value;
-            const firstName = document.getElementById("firstName").value;
-            const lastName = document.getElementById("lastName").value;
-            const telephone = document.getElementById("telephone").value;
-            const boatName = document.getElementById("boatName").value;
-            const boatLength = document.getElementById("boatLength").value;
-            const password = document.getElementById("password").value;
-
-            try {
-                const response = await fetch("RegisterServlet", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ email, firstName, lastName, telephone, boatName, boatLength, password })
-                });
-
-                if (response.ok) {
-                    alert("Registration successful!");
-                } else {
-                    const errorData = await response.json();
-                    document.getElementById("errorMessage").innerText = errorData.message;
-                }
-            } catch (error) {
-                console.error("Error:", error);
-                alert("Registration failed!");
-            }
-        });
-    </script>
 </body>
 </html>
