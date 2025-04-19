@@ -22,7 +22,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Database connection (adjust these variables accordingly)
     $servername = "localhost";
     $username = "moffatWrite";
-    $dbPassword = "moffatWrite";
+    $dbPassword = "moffatPass";
     $dbname = "moffat_bay_marina";
 
     // Create connection
@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare SQL statement to insert user data
-    $stmt = $conn->prepare("INSERT INTO boats (boatName, boatLength) VALUES (?, ?)");
-    $stmt->bind_param("ss", $boatName, $boatLength);
+    $stmt = $conn->prepare("INSERT INTO boats (boatName, boatLength, slipId) VALUES (?, ?, 1)");
+    $stmt->bind_param("ss", $boatName, $boatLength );
     $stmt->execute();
 
     $stmt = $conn->prepare("SELECT boatId FROM boats where boatName = ?");

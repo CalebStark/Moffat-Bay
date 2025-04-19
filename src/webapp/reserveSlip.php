@@ -31,7 +31,7 @@ try {
     $stmt->execute();
 
     // Update the slip status to confirmed (2)
-    $update = $conn->prepare("UPDATE slips SET status = 2 WHERE id = ?");
+    $update = $conn->prepare("UPDATE slips SET available = 0 WHERE id = ?");
     $update->bind_param("s", $slipId);
     $update->execute();
 
