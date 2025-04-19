@@ -34,9 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     // Prepare SQL statement to insert user data
-    $slipID = "1";
-    $stmt = $conn->prepare("INSERT INTO boats (boatName, boatLength, slipId) VALUES (?, ?, ?)");
-    $stmt->bind_param("sss", $boatName, $boatLength, $slipID);
+    $stmt = $conn->prepare("INSERT INTO boats (boatName, boatLength) VALUES (?, ?)");
+    $stmt->bind_param("ss", $boatName, $boatLength);
     $stmt->execute();
 
     $stmt = $conn->prepare("SELECT boatId FROM boats where boatName = ?");
@@ -48,7 +47,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 
     $stmt = $conn->prepare("INSERT INTO customers (email, firstName, lastName, telephone, boatId, passwordHash) VALUES (?, ?, ?, ?, ?, ?)");
-    $stmt->bind_param("ssssss", $email, $firstName, $lastName, $telephone, $boatId, $hashedPassword);
+    $stmt->bind_param("ssssis", $email, $firstName, $lastName, $telephone, $boatId, $hashedPassword);
 
     // Execute the query
     if ($stmt->execute()) {

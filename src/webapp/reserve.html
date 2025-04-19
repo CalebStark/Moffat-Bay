@@ -1,8 +1,41 @@
+<?php
+session_start();
+if (!isset($_SESSION['csrf_token'])) {
+    $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
     <title>Reserve a Slip - Moffat Bay Marina</title>
+    <link rel="stylesheet" href="css/reserveStyle.css">
     <link rel="stylesheet" href="css/style.css">
+	<script> <!-- Fetches session data created on login -->
+		window.onload = function () {
+		fetch('getSession.php')
+        .then(res => res.json())
+        .then(data => {
+            if (data.loggedIn) {
+                document.getElementById('reservationForm').style.display = 'block';
+                document.getElementById('loginMessage').style.display = 'none';
+
+                // Show debug info for testing
+                const debugBox = document.createElement('div');
+                debugBox.innerHTML = `
+                    <h3>Session Info</h3>
+                    <ul>
+                        <li>Customer ID: ${data.customerId}</li>
+                        <li>Boat ID: ${data.boatId}</li>
+                        <li>Boat Name: ${data.boatName}</li>
+                        <li>Boat Length: ${data.boatLength} ft</li>
+                    </ul>
+                `;
+                document.body.appendChild(debugBox);
+            }
+        });
+};
+
+	</script>
 </head>
 <body>
     <header>
@@ -14,7 +47,7 @@
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="register.html">Register</a></li>
                 <li><a href="login.html">Login</a></li>
-                <li><a href="reserve.html">Reserve Slip</a></li>
+                <li><a href="reserve.php">Reserve Slip</a></li>
                 <li><a href="lookup.html">Lookup Reservation</a></li>
                 <li><a href="waitlist.html">View Waitlist</a></li>
             </ul>
@@ -25,7 +58,7 @@
             <h2>Slip Reservation</h2>
             <p id="loginMessage"><a href="login.html">Please login to make a reservation.</a></p>
 
-            <form id="reservationForm" style="display:none;">
+            <form id="reservationForm" style="display:none;" method="POST" action="reserveSlip.php">
                 <label for="boatLength">Boat Length (feet):</label><br>
                 <select id="boatLength" name="boatLength" required>
                     <option value="26">26 ft</option>
@@ -39,87 +72,169 @@
                 <label for="checkInDate">Check-in Date:</label><br>
                 <input type="date" id="checkInDate" name="checkInDate" required><br>
 
+                <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
+
+                <input type="hidden" name="slipId" id="slipId" value=""> <!-- Filled dynamically -->
+
                 <button type="submit" class="button">Check Availability</button>
             </form>
 
             <div id="availabilityResult"></div>
             <div id="waitlistResult"></div>
+			
+			
+
+            <div class="marina">
+                <div class="dock" id="colorKey">
+                    <h3>Availability</h3>
+                    <div class="available colorKey" data-slip="A1" >Available</div>
+                    <div class="reserved colorKey" data-slip="A2">Unavailable</div>
+                    <div class="confirmed colorKey" data-slip="A3">Confirmed</div>
+                </div>
+
+                <div class="dock" id="dock-a">
+                    <h3>Dock A: 26ft</h3>
+                    <div class="slip" data-slip="A1" data-size="26">A1</div>
+                    <div class="slip" data-slip="A2" data-size="26">A2</div>
+                    <div class="slip" data-slip="A3" data-size="26">A3</div>
+                </div>
+
+                <div class="dock" id="dock-b">
+                    <h3>Dock B: 40ft</h3>
+                    <div class="slip" data-slip="B1" data-size="40">B1</div>
+                    <div class="slip" data-slip="B2" data-size="40">B2</div>
+                    <div class="slip" data-slip="B3" data-size="40">B3</div>
+                </div>
+
+                <div class="dock" id="dock-c">
+                    <h3>Dock C: 50ft</h3>
+                    <div class="slip" data-slip="C1" data-size="50">C1</div>
+                    <div class="slip" data-slip="C2" data-size="50">C2</div>
+                    <div class="slip" data-slip="C3" data-size="50">C3</div>
+                </div>
+            </div>
+			<!-- Interactive dock for slip reservation -->
+			
+            <!-- Modals -->
+            <div class="modal" id="errorModal">
+                <div class="modal-content">
+                    <div class="modal-header">Login Error</div>
+                    <div class="modal-body" id="modalMessage"></div>
+                    <div class="modal-footer">
+                        <button onclick="closeModal()">Try Again</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal" id="successModal">
+                <div class="modal-content">
+                    <div class="modal-header">Reservation Successful</div>
+                    <div class="modal-body">Your slip has been reserved!</div>
+                    <div class="modal-footer">
+                        <button onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
+
         </section>
     </main>
     <footer>
         <p>© 2025 Moffat Bay Marina</p>
     </footer>
-
+	<!-- Modal logic-->
     <script>
-        // Function to check if the user is "logged in" (replace with proper session management)
-        function isLoggedIn() {
-            //TODO: implement session management
-            return true;
+    function closeModal() {
+        document.getElementById('errorModal').style.display = 'none';
+        document.getElementById('successModal').style.display = 'none';
+    }
+
+    // Display modals and initialize if logged in
+    window.onload = function () {
+        const params = new URLSearchParams(window.location.search);
+        if (params.has('error')) {
+            const msg = decodeURIComponent(params.get('error'));
+            document.getElementById('modalMessage').innerText = msg;
+            document.getElementById('errorModal').style.display = 'block';
+        } else if (params.has('success')) {
+            document.getElementById('successModal').style.display = 'block';
+            setTimeout(function () {
+                window.location.href = 'index.html';
+            }, 5000);
         }
 
-        // Show or hide the form based on login status
-        if (isLoggedIn()) {
-            document.getElementById("loginMessage").style.display = "none";
-            document.getElementById("reservationForm").style.display = "block";
-
-             document.getElementById("reservationForm").addEventListener("submit", async (event) => {
-                event.preventDefault();
-
-                const boatLength = document.getElementById("boatLength").value;
-                const boatName = document.getElementById("boatName").value;
-                const checkInDate = document.getElementById("checkInDate").value;
-
-                try {
-                    const response = await fetch("ReserveServlet", {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json"
-                        },
-                        body: JSON.stringify({ boatLength, boatName, checkInDate })
-                    });
-
-                    if (response.ok) {
-                        const data = await response.json();
-                        document.getElementById("availabilityResult").innerText = data.message;
-                        document.getElementById("waitlistResult").innerText = ""; //Clear waitlist
-                            try {
-                                //Store parameters in session
-                                 const response = await fetch("SessionServlet", {
-                                        method: "POST",
-                                        headers: {
-                                            "Content-Type": "application/json"
-                                        },
-                                        body: JSON.stringify({ boatLength, boatName, checkInDate })
-                                    });
-
-                                    if (response.ok) {
-                                      window.location.href = "summary.html"; // Redirect to summary page
-                                    } else {
-                                        alert("It was not possible to Store the session parameters.");
-                                    }
-                                } catch (error) {
-                                    console.error("Error:", error);
-                                    document.getElementById("availabilityResult").innerText = "Error storing session.";
-                                    document.getElementById("waitlistResult").innerText = ""; //Clear waitlist
-                                }
-
-
-                    } else {
-                        const errorData = await response.json();
-                        document.getElementById("availabilityResult").innerText = errorData.message;
-                         document.getElementById("waitlistResult").innerText = ""; //Clear waitlist
-                    }
-
-                } catch (error) {
-                    console.error("Error:", error);
-                    document.getElementById("availabilityResult").innerText = "Error checking availability.";
-                     document.getElementById("waitlistResult").innerText = ""; //Clear waitlist
+        // Fetch session info to determine if logged in
+        fetch('getSession.php')
+            .then(res => res.json())
+            .then(session => {
+                if (session.loggedIn) {
+                    document.getElementById('reservationForm').style.display = 'block';
+                    document.getElementById('loginMessage').style.display = 'none';
                 }
             });
-        } else {
-            document.getElementById("loginMessage").style.display = "block";
-            document.getElementById("reservationForm").style.display = "none";
+
+        updateSlipColors();
+        setInterval(updateSlipColors, 10000); // Refresh every 10s
+    };
+	
+    function updateSlipColors() {
+        fetch('getSlips.php')
+            .then(res => res.json())
+            .then(data => {
+                document.querySelectorAll('.slip').forEach(slip => {
+                    const slipId = slip.getAttribute('data-slip');
+                    const status = data[slipId];
+
+                    slip.classList.remove('available', 'reserved', 'confirmed');
+                    if (status == 1) {
+                        slip.classList.add('reserved');
+                    } else if (status == 2) {
+                        slip.classList.add('confirmed');
+                    } else {
+                        slip.classList.add('available');
+                    }
+                });
+            });
+    }
+
+     // Handle size filtering
+    document.addEventListener('DOMContentLoaded', function () {
+        const boatLengthSelect = document.getElementById('boatLength');
+        if (boatLengthSelect) {
+            boatLengthSelect.addEventListener('change', function () {
+                const selectedSize = this.value;
+
+                document.querySelectorAll('.slip').forEach(slip => {
+                    const slipSize = slip.getAttribute('data-size');
+                    slip.classList.remove('incompatible');
+
+                    // Grey out slips whose size is incompatible with the selected boat size
+                    if (slipSize && slipSize !== selectedSize) {
+                        slip.classList.add('incompatible');
+                    }
+                });
+            });
         }
-    </script>
+
+        // Handle slip selection and auto-submit
+        document.querySelectorAll('.slip').forEach(slip => {
+            slip.addEventListener('click', function () {
+                if (
+                    this.classList.contains('available') &&
+                    !this.classList.contains('incompatible')
+                ) {
+                    document.querySelectorAll('.slip').forEach(s => s.classList.remove('selected'));
+                    this.classList.add('selected');
+
+                    const slipId = this.dataset.slip.replace(/[A-Z]/, '');
+                    document.getElementById('slipId').value = slipId;
+
+                    document.getElementById('reservationForm').submit();
+                }
+            });
+        });
+    });
+</script>
+
+
 </body>
 </html>
