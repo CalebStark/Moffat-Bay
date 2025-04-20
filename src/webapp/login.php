@@ -1,6 +1,7 @@
 <?php
 session_start();
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
     $password = $_POST['password'];
@@ -9,15 +10,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         redirectWithError("Please enter a valid email and password.");
     } else {
         try {
-			if (checkLogin($email, $password))	{
-				header("Location: login.html?success=true");
-				exit();
-			}
-			else {
+            if (checkLogin($email, $password)) {
+                header("Location: reserve.php?success=true");
+                exit();
+            } else {
                 redirectWithError("Invalid login credentials.");
             }
         } catch (Exception $e) {
             redirectWithError("An error occurred. Please try again later.");
+            // For debugging only (don't leave this in production):
+            // die("Error: " . $e->getMessage());
         }
     }
 }
@@ -28,7 +30,13 @@ function checkLogin($email, $pass) {
         throw new Exception("Connection failed: " . $conn->connect_error);
     }
 
-    $stmt = $conn->prepare("SELECT email, passwordHash FROM customers WHERE email = ?");
+    // Join to get customer and boat info
+    $stmt = $conn->prepare("
+        SELECT c.customerId, c.boatId, c.passwordHash, b.boatName, b.boatLength
+        FROM customers c
+        JOIN boats b ON c.boatId = b.boatId
+        WHERE c.email = ?
+    ");
     if (!$stmt) {
         throw new Exception("Prepare failed: " . $conn->error);
     }
@@ -40,7 +48,13 @@ function checkLogin($email, $pass) {
     if ($result && $result->num_rows === 1) {
         $row = $result->fetch_assoc();
         if (password_verify($pass, $row['passwordHash'])) {
-            $_SESSION['email'] = $row['email'];
+            // Set session variables
+            $_SESSION['customerId'] = $row['customerId'];
+            $_SESSION['boatId'] = $row['boatId'];
+            $_SESSION['boatName'] = $row['boatName'];
+            $_SESSION['boatLength'] = $row['boatLength'];
+            $_SESSION['loggedIn'] = true;
+
             $stmt->close();
             $conn->close();
             return true;

@@ -64,23 +64,24 @@ if (!isset($_SESSION['csrf_token'])) {
 
             <form id="reservationForm" style="display:none;" method="POST" action="reserveSlip.php">
                 <label for="boatLength">Boat Length (feet):</label><br>
-                <select id="boatLength" name="boatLength" required>
+                <input type="text" id="boatLength" name="boatLength" value="<?= $_SESSION['boatLength']?>" required readonly><br>
+                <!-- <select id="boatLength" name="boatLength" required>
                     <option value="26">26 ft</option>
                     <option value="40">40 ft</option>
                     <option value="50">50 ft</option>
-                </select><br>
+                </select><br> -->
 
                 <label for="boatName">Boat Name:</label><br>
-                <input type="text" id="boatName" name="boatName" required><br>
+                <input type="text" id="boatName" name="boatName" value='<?= $_SESSION["boatName"]?>' required readonly><br>
 
                 <label for="checkInDate">Check-in Date:</label><br>
-                <input type="date" id="checkInDate" name="checkInDate" required><br>
+                <input type="date" id="checkInDate" name="checkInDate" value=''required><br>
 
                 <input type="hidden" name="csrf_token" value="<?= $_SESSION['csrf_token'] ?>">
 
                 <input type="hidden" name="slipId" id="slipId" value=""> <!-- Filled dynamically -->
 
-                <button type="submit" class="button">Check Availability</button>
+                <button type="submit" class="button">Submit Reservation</button>
             </form>
 
             <div id="availabilityResult"></div>
@@ -93,28 +94,28 @@ if (!isset($_SESSION['csrf_token'])) {
                     <h3>Availability</h3>
                     <div class="available colorKey" data-slip="A1" >Available</div>
                     <div class="reserved colorKey" data-slip="A2">Unavailable</div>
-                    <div class="confirmed colorKey" data-slip="A3">Confirmed</div>
+                    <div class="confirmed colorKey" data-slip="A3">Selected</div>
                 </div>
 
                 <div class="dock" id="dock-a">
                     <h3>Dock A: 26ft</h3>
-                    <div class="slip" data-slip="A1" data-size="2">A1</div>
-                    <div class="slip" data-slip="A2" data-size="4">A2</div>
-                    <div class="slip" data-slip="A3" data-size="6">A3</div>
+                    <div class="slip" data-slip="A1" slipNumber="2" slip-size="26">A1</div>
+                    <div class="slip" data-slip="A2" slipNumber="4" slip-size="26">A2</div>
+                    <div class="slip" data-slip="A3" slipNumber="6" slip-size="26">A3</div>
                 </div>
 
                 <div class="dock" id="dock-b">
                     <h3>Dock B: 40ft</h3>
-                    <div class="slip" data-slip="B1" data-size="3">B1</div>
-                    <div class="slip" data-slip="B2" data-size="7">B2</div>
-                    <div class="slip" data-slip="B3" data-size="10">B3</div>
+                    <div class="slip" data-slip="B1" slipNumber="3" slip-size="40">B1</div>
+                    <div class="slip" data-slip="B2" slipNumber="7" slip-size="40">B2</div>
+                    <div class="slip" data-slip="B3" slipNumber="10" slip-size="40">B3</div>
                 </div>
 
                 <div class="dock" id="dock-c">
                     <h3>Dock C: 50ft</h3>
-                    <div class="slip" data-slip="C1" data-size="5">C1</div>
-                    <div class="slip" data-slip="C2" data-size="8">C2</div>
-                    <div class="slip" data-slip="C3" data-size="9">C3</div>
+                    <div class="slip" data-slip="C1" slipNumber="5" slip-size="50">C1</div>
+                    <div class="slip" data-slip="C2" slipNumber="8" slip-size="50">C2</div>
+                    <div class="slip" data-slip="C3" slipNumber="9" slip-size="50">C3</div>
                 </div>
             </div>
 			<!-- Interactive dock for slip reservation -->
@@ -158,7 +159,7 @@ if (!isset($_SESSION['csrf_token'])) {
             .then(res => res.json())
             .then(data => {
                 document.querySelectorAll('.slip').forEach(slip => {
-                    const slipId = slip.getAttribute('data-size');
+                    const slipId = slip.getAttribute('slipNumber');
                     const status = data[slipId];
 
                     slip.classList.remove('available', 'reserved', 'confirmed');
@@ -198,27 +199,20 @@ if (!isset($_SESSION['csrf_token'])) {
             });
 
         updateSlipColors();
-        setInterval(updateSlipColors, 10000); // Refresh every 10s
+        // setInterval(updateSlipColors, 10000); // Refresh every 10s
     };
 
      // Handle size filtering
     document.addEventListener('DOMContentLoaded', function () {
-        const boatLengthSelect = document.getElementById('boatLength');
-        if (boatLengthSelect) {
-            boatLengthSelect.addEventListener('change', function () {
-                const selectedSize = this.value;
-
-                document.querySelectorAll('.slip').forEach(slip => {
-                    const slipSize = slip.getAttribute('data-size');
-                    slip.classList.remove('incompatible');
-
-                    // Grey out slips whose size is incompatible with the selected boat size
-                    if (slipSize && slipSize !== selectedSize) {
-                        slip.classList.add('incompatible');
-                    }
-                });
-            });
-        }
+        const boatLengthSelect = document.getElementById('boatLength').getAttribute('value');
+        document.querySelectorAll('.slip').forEach(slip => {
+            const slipSize = slip.getAttribute('slip-size');
+            slip.classList.remove('incompatible')
+            if (slipSize !== boatLengthSelect){
+                slip.classList.add('incompatible');
+            }
+            
+        });
 
         // Handle slip selection and auto-submit
         document.querySelectorAll('.slip').forEach(slip => {
@@ -228,12 +222,12 @@ if (!isset($_SESSION['csrf_token'])) {
                     !this.classList.contains('incompatible')
                 ) {
                     document.querySelectorAll('.slip').forEach(s => s.classList.remove('selected'));
-                    this.classList.add('selected');
+                    this.classList.add('confirmed');
 
-                    const slipId = this.dataset.slip.replace(/[A-Z]/, '');
+                    const slipId = this.getAttribute('slipNumber')
                     document.getElementById('slipId').value = slipId;
 
-                    document.getElementById('reservationForm').submit();
+                    //document.getElementById('reservationForm').submit();
                 }
             });
         });
