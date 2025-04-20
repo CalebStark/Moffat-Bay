@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             if (checkLogin($email, $password)) {
-                header("Location: reserve.html?success=true");
+                header("Location: reserve.php?success=true");
                 exit();
             } else {
                 redirectWithError("Invalid login credentials.");

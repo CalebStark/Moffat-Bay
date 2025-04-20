@@ -24,14 +24,14 @@ $conn->begin_transaction();
 try {
     // Insert into reservations table
     $stmt = $conn->prepare("
-        INSERT INTO reservations (customerId, boatId, slipId, check_in_date)
-        VALUES (?, ?, ?, ?)
+        INSERT INTO reservations (customerId, slipId, checkInDate)
+        VALUES (?, ?, ?)
     ");
-    $stmt->bind_param("iiis", $customerId, $boatId, $slipId, $checkInDate);
+    $stmt->bind_param("iis", $customerId, $slipId, $checkInDate);
     $stmt->execute();
 
     // Update the slip status to confirmed (2)
-    $update = $conn->prepare("UPDATE slips SET available = 0 WHERE id = ?");
+    $update = $conn->prepare("UPDATE slips SET available = FALSE WHERE slipId = ?");
     $update->bind_param("s", $slipId);
     $update->execute();
 
