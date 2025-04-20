@@ -5,8 +5,10 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <h1>Contact Moffat Bay Marina</h1>
+    <header class="top-banner">
+        <div class="logo">
+          <a href="index.html"><img class="logo-img" src="images/logo.PNG" alt="Logo if we're feeling fancy!"></a>
+        </div>
         <nav class="nav-links">
             <ul>
                 <li><a href="index.html">Home</a></li>
@@ -21,21 +23,21 @@
         </nav>  
     </header>
     <main>
-        <section>
+        <section class="contact-info">
             <h2>Contact Information</h2>
             <p>Address: 123 Marina Drive, Seattle, WA 98101</p>
             <p>Phone: (206) 555-1212</p>
             <p>Email: info@moffatbaymarina.com</p>
             <p>VHF Channel: 16</p>
         </section>
-        <section>
+        <section class="contact-form">
             <h2>Contact Form</h2>
             <form>
-                <label for="name">Name:</label><br>
-                <input type="text" id="name" name="name"><br>
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email"><br>
-                <label for="message">Message:</label><br>
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email">
+                <label for="message">Message:</label>
                 <textarea id="message" name="message"></textarea><br>
                 <input type="submit" value="Submit" class = "button">
             </form>

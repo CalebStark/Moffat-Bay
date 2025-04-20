@@ -41,6 +41,7 @@ nav ul li {
 .nav-links a {
     color: white;
     text-decoration: none;
+    white-space: nowrap;
     margin-left: 20px;
 }
 
@@ -230,10 +231,80 @@ footer {
     margin-bottom: 0;
 }
 
+.hero-image-about {
+    position: relative;
+    width: 100%;
+    height: 200px; 
+    background-image: url('../images/marina-hero.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.hero-text-about {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    color: white;
+    font-size: 40px;
+    font-weight: bold;
+}
+
 .info-box h2 i {
     margin-right: 10px;
     color: #2327e8;
 }
 
+.contact-info {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px 25px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .contact-info h2 {
+    margin-bottom: 15px;
+    font-size: 1.5em;
+    color: #2327e8;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 5px;
+  }
+  
+  .contact-info p {
+    margin: 10px 0;
+    font-size: 1em;
+    color: #333;
+  }
+
+  .contact-form {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px 25px;
+  }
+
+  .contact-form form {
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  }
+
+  .contact-form label {
+    font-weight: bold;
+    max-width: 400px;
+
+  }
+
+  .contact-form input {
+    max-width: 400px;
+
+  }
+
+  .contact-form textarea {
+    max-width: 400px;
+    resize: vertical;
+  }
 
 
