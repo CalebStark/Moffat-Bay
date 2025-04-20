@@ -3,31 +3,42 @@
 <head>
     <title>About Us - Moffat Bay Marina</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body>
     <header>
         <h1>About Moffat Bay Marina</h1>
-        <nav>
+        <nav class="nav-links">
             <ul>
                 <li><a href="index.html">Home</a></li>
                 <li><a href="about.html">About Us</a></li>
                 <li><a href="contact.html">Contact Us</a></li>
                 <li><a href="register.html">Register</a></li>
                 <li><a href="login.html">Login</a></li>
+                <li><a href="reserve.html">Reserve a Slip</a></li>
+                <li><a href="waitlist.html">Wait List</a></li>
+                <li><a href="lookup.html">Reservation Lookup</a></li>
             </ul>
-        </nav>
+        </nav>       
     </header>
+    <section class="hero-image">
+        <img src="images/marina-hero.jpg" alt="Moffat Bay Marina" />
+    </section> 
     <main>
-        <section>
-            <h2>Our Story</h2>
-            <p>Moffat Bay Marina has been serving the Seattle boating community for over 50 years...</p>
-        </section>
-        <section>
-            <h2>Slip Costs</h2>
-            <p>Monthly cost = $10 per foot + $10 for electric power.</p>
-            <p>Example: A 34 ft boat would cost $350 a month.</p>
-        </section>
-    </main>
+        <div class="about-container">
+            <div class="info-box">
+                <h2><i class="fas fa-anchor"></i> Our Story</h2>
+                <p>Moffat Bay Marina has been serving the Seattle boating community for over 50 years. We offer some of the most beautiful scenery, lively local businesses, and a thriving community and culture for you to explore!</p>
+            </div>
+            <div class="info-box">
+                <h2><i class="fas fa-dollar-sign"></i> Slip Costs</h2>
+                <p>Monthly cost = $10 per foot + $10 for electric power.</p>
+                <p>Example: A 34 ft boat would cost $350 a month.</p>
+                <p>To reserve a slip with us, visit our <a href="reserve.html">slip reservation page.</a></p>
+            </div>
+        </div>
+    </main>    
     <footer>
         <p>© 2025 Moffat Bay Marina</p>
     </footer>

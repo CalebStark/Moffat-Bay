@@ -185,3 +185,55 @@ footer {
     background-color: #333;
 }
 
+.about-container {
+    display: flex;
+    gap: 2em;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 2em;
+    padding-bottom: 200px;
+    position: relative;
+}
+
+.info-box {
+    flex: 1 1 300px;
+    background-color: #ffffff;
+    border: 2px solid #67c6ff;
+    border-radius: 12px;
+    padding: 2em;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 500px;
+}
+
+.info-box h2 {
+    margin-bottom: 1em;
+    color: #2327e8;
+}
+
+.info-box p {
+    color: #333;
+    line-height: 1.5;
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 200px;
+    object-fit: cover;
+    border-bottom: 4px solid #67c6ff;
+    margin-bottom: 0;
+}
+
+.hero-image {
+    margin-bottom: 0;
+}
+
+.info-box h2 i {
+    margin-right: 10px;
+    color: #2327e8;
+}
+
+
+
