@@ -11,7 +11,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         try {
             if (checkLogin($email, $password)) {
-                header("Location: reserve.php?success=true");
+                header("Location: login.html?success=true");
                 exit();
             } else {
                 redirectWithError("Invalid login credentials.");
@@ -32,7 +32,7 @@ function checkLogin($email, $pass) {
 
     // Join to get customer and boat info
     $stmt = $conn->prepare("
-        SELECT c.customerId, c.boatId, c.passwordHash, b.boatName, b.boatLength
+        SELECT c.customerId, c.boatId, c.passwordHash, b.boatName, b.boatLength, b.slipId
         FROM customers c
         JOIN boats b ON c.boatId = b.boatId
         WHERE c.email = ?
@@ -53,6 +53,7 @@ function checkLogin($email, $pass) {
             $_SESSION['boatId'] = $row['boatId'];
             $_SESSION['boatName'] = $row['boatName'];
             $_SESSION['boatLength'] = $row['boatLength'];
+            $_SESSION['slipId'] = $row['slipId'];
             $_SESSION['loggedIn'] = true;
 
             $stmt->close();

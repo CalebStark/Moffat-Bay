@@ -38,6 +38,8 @@ try {
     // Commit changes
     $conn->commit();
 
+    $_SESSION['slipId'] = $slipId;
+
     header("Location: reserve.php?success=1");
     exit;
 } catch (Exception $e) {

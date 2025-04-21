@@ -9,7 +9,8 @@ if (isset($_SESSION['loggedIn']) && $_SESSION['loggedIn']) {
         'customerId' => $_SESSION['customerId'],
         'boatId' => $_SESSION['boatId'],
         'boatName' => $_SESSION['boatName'],
-        'boatLength' => $_SESSION['boatLength']
+        'boatLength' => $_SESSION['boatLength'],
+        'slipId' => $_SESSION['slipId']
     ]);
 } else {
     echo json_encode(['loggedIn' => false]);

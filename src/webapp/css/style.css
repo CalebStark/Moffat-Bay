@@ -307,4 +307,6 @@ footer {
     resize: vertical;
   }
 
-
+.labelNext {
+    align-content: right;
+}

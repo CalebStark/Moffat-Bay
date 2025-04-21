@@ -184,8 +184,8 @@ if (!isset($_SESSION['csrf_token'])) {
         } else if (params.has('success')) {
             document.getElementById('successModal').style.display = 'block';
             setTimeout(function () {
-                window.location.href = 'index.html';
-            }, 5000);
+                window.location.href = 'reservationSummary.php';
+            }, 1000);
         }
 
         // Fetch session info to determine if logged in
@@ -221,7 +221,7 @@ if (!isset($_SESSION['csrf_token'])) {
                     this.classList.contains('available') &&
                     !this.classList.contains('incompatible')
                 ) {
-                    document.querySelectorAll('.slip').forEach(s => s.classList.remove('selected'));
+                    document.querySelectorAll('.slip').forEach(s => s.classList.remove('confirmed'));
                     this.classList.add('confirmed');
 
                     const slipId = this.getAttribute('slipNumber')
