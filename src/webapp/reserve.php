@@ -48,7 +48,7 @@ if (!isset($_SESSION['csrf_token'])) {
         </div>
         <nav class="nav-links">
             <a href="index.html">Home</a>
-            <a href="waitlist.html">Wait List</a>
+            <a href="waitlist.php">Wait List</a>
             <a href="lookup.html">Reservation Lookup</a>
             <a href="about.html">About Us</a>
             <a href="contact.html">Contact Us</a>
@@ -130,6 +130,16 @@ if (!isset($_SESSION['csrf_token'])) {
                     </div>
                 </div>
             </div>
+            
+            <div class="modal" id="waitlistModal">
+                <div class="modal-content">
+                    <div class="modal-header">Waitlist Request Added</div>
+                    <div class="modal-body">You have been added to the slip waitlist!</div>
+                    <div class="modal-footer">
+                        <button onclick="closeModal()">Close</button>
+                    </div>
+                </div>
+            </div>
 
             <div class="modal" id="successModal">
                 <div class="modal-content">
@@ -151,6 +161,7 @@ if (!isset($_SESSION['csrf_token'])) {
     function closeModal() {
         document.getElementById('errorModal').style.display = 'none';
         document.getElementById('successModal').style.display = 'none';
+        document.getElementById('waitlistModal').style.display = 'none';
     }
 
     // Set color to update

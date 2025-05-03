@@ -25,7 +25,7 @@ if (!isset($_SESSION['csrf_token'])) {
                     <li><a href="register.html">Register</a></li>
                     <li><a href="login.html">Login</a></li>
                     <li><a href="reserve.php">Reserve a Slip</a></li>
-                    <li><a href="waitlist.html">Wait List</a></li>
+                    <li><a href="waitlist.php">Wait List</a></li>
                     <li><a href="lookup.html">Reservation Lookup</a></li>
                 </ul>
             </nav>  
