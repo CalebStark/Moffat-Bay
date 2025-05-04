@@ -18,33 +18,69 @@ if (!$checkInDate || !$slipId || !$customerId || !$boatId) {
     exit;
 }
 
-// Begin transaction
-$conn->begin_transaction();
+$result = $conn->query("SELECT available FROM slips WHERE slipId = $slipId");
+$availability = $result->fetch_assoc();
+if ($availability['available']){
+    addReservation($conn, $customerId, $slipId, $checkInDate);
+} elseif (!$availability['available']){
+    addWaitlist($conn, $customerId, $slipId);
+}
 
-try {
-    // Insert into reservations table
-    $stmt = $conn->prepare("
+function addReservation($conn, $customerId, $slipId, $checkInDate)
+{
+    // Begin transaction
+    $conn->begin_transaction();
+    try {
+        // Insert into reservations table
+        $stmt = $conn->prepare("
         INSERT INTO reservations (customerId, slipId, checkInDate)
         VALUES (?, ?, ?)
     ");
-    $stmt->bind_param("iis", $customerId, $slipId, $checkInDate);
-    $stmt->execute();
+        $stmt->bind_param("iis", $customerId, $slipId, $checkInDate);
+        $stmt->execute();
 
-    // Update the slip status to confirmed (2)
-    $update = $conn->prepare("UPDATE slips SET available = FALSE WHERE slipId = ?");
-    $update->bind_param("s", $slipId);
-    $update->execute();
+        // Update the slip status to confirmed (2)
+        $update = $conn->prepare("UPDATE slips SET available = FALSE WHERE slipId = ?");
+        $update->bind_param("s", $slipId);
+        $update->execute();
 
-    // Commit changes
-    $conn->commit();
+        // Commit changes
+        $conn->commit();
 
-    $_SESSION['slipId'] = $slipId;
+        $_SESSION['slipId'] = $slipId;
 
-    header("Location: reserve.php?success=1");
-    exit;
-} catch (Exception $e) {
-    $conn->rollback();
-    header("Location: reserve.php?error=" . urlencode("Database error: " . $e->getMessage()));
-    exit;
+        header("Location: reserve.php?success=1");
+        exit;
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        header("Location: reserve.php?error=" . urlencode("Database error: " . $e->getMessage()));
+        exit;
+    }
 }
+
+function addWaitlist($conn, $customerId, $slipId){
+    $conn->begin_transaction();
+    try {
+        // Insert into reservations table
+        $stmt = $conn->prepare("
+        INSERT INTO waitlist (customerId, slipId)
+        VALUES (?, ?)
+    ");
+        $stmt->bind_param("ii", $customerId, $slipId);
+        $stmt->execute();
+
+        // Commit changes
+        $conn->commit();
+
+        header("Location: reserve.php?waitlist=1");
+        exit;
+
+    } catch (Exception $e) {
+        $conn->rollback();
+        header("Location: reserve.php?error=" . urlencode("Database error: " . $e->getMessage()));
+        exit;
+    }
+}
+
 ?>

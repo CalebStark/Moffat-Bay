@@ -23,9 +23,7 @@
 }
 
 .available { background-color: green; }
-.reserved  { background-color: red; 
-  cursor: not-allowed;
-  }
+.reserved  { background-color: red; }
 .confirmed { background-color: blue; }
 
 .colorKey {

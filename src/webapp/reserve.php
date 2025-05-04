@@ -11,35 +11,6 @@ if (!isset($_SESSION['csrf_token'])) {
     <title>Reserve a Slip - Moffat Bay Marina</title>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/reserveStyle.css">
-
-<!-- NOT USED ADVISE ON DELETE-->
-	<!-- <script>  Fetches session data created on login
-		window.onload = function () {
-            fetch('getSession.php')
-            .then(res => res.json())
-            .then(data => {
-                if (data.loggedIn) {
-                    console.log("Logged in")
-                    document.getElementById('reservationForm').style.display = 'block';
-                    document.getElementById('loginMessage').style.display = 'none';
-
-                    // Show debug info for testing
-                    const debugBox = document.createElement('div');
-                    debugBox.innerHTML = `
-                        <h3>Session Info</h3>
-                        <ul>
-                            <li>Customer ID: ${data.customerId}</li>
-                            <li>Boat ID: ${data.boatId}</li>
-                            <li>Boat Name: ${data.boatName}</li>
-                            <li>Boat Length: ${data.boatLength} ft</li>
-                        </ul>
-                    `;
-                    document.body.appendChild(debugBox);
-                }
-            });
-        };
-
-	</script> -->
 </head>
 <body>
     <header class="top-banner">
@@ -81,7 +52,7 @@ if (!isset($_SESSION['csrf_token'])) {
 
                 <input type="hidden" name="slipId" id="slipId" value=""> <!-- Filled dynamically -->
 
-                <button type="submit" class="button">Submit Reservation</button>
+                <button type="submit" id="submitButton" class="button">Submit Reservation</button>
             </form>
 
             <div id="availabilityResult"></div>
@@ -192,6 +163,11 @@ if (!isset($_SESSION['csrf_token'])) {
             const msg = decodeURIComponent(params.get('error'));
             document.getElementById('modalMessage').innerText = msg;
             document.getElementById('errorModal').style.display = 'block';
+        } else if (params.has('waitlist')){
+            document.getElementById('waitlistModal').style.display = 'block';
+            setTimeout(function () {
+                window.location.href = 'reservationSummary.php';
+            }, 2000);
         } else if (params.has('success')) {
             document.getElementById('successModal').style.display = 'block';
             setTimeout(function () {
@@ -228,17 +204,28 @@ if (!isset($_SESSION['csrf_token'])) {
         // Handle slip selection and auto-submit
         document.querySelectorAll('.slip').forEach(slip => {
             slip.addEventListener('click', function () {
+                console.log("Im Here")
                 if (
                     this.classList.contains('available') &&
                     !this.classList.contains('incompatible')
                 ) {
                     document.querySelectorAll('.slip').forEach(s => s.classList.remove('confirmed'));
                     this.classList.add('confirmed');
+                    document.getElementById('submitButton').innerHTML = "Submit Reservation"
 
                     const slipId = this.getAttribute('slipNumber')
                     document.getElementById('slipId').value = slipId;
 
                     //document.getElementById('reservationForm').submit();
+                } else if (this.classList.contains('reserved') && !this.classList.contains('incompatible')) {
+                    console.log("In the Matrix")
+                    document.getElementById('submitButton').innerHTML = "Add Your Selection To Wait List"
+
+                    document.querySelectorAll('.slip').forEach(s => s.classList.remove('confirmed'));
+                    this.classList.add('confirmed');
+
+                    const slipId = this.getAttribute('slipNumber')
+                    document.getElementById('slipId').value = slipId;
                 }
             });
         });
