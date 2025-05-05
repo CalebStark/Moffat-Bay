@@ -28,15 +28,17 @@
     $conn->close();
 ?>
 
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Wait List - Moffat Bay Marina</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
     <header class="top-banner">
         <div class="logo">
-          <a href="index.html"><img class="logo-img" src="images/logo.PNG" alt="Logo if we're feeling fancy!"></a>
+          <a href="index.html"><img class="logo-img" src="images/logo.PNG" alt="Moffat Bay Marina Logo"></a>
         </div>
         <nav class="nav-links">
             <ul>
@@ -51,16 +53,19 @@
             </ul>
         </nav>  
     </header>
+
     <main>
-        <section>
-            <h2>Current Wait Lists</h2>
-            <ul id="waitlistCounts">
-                <li>26 ft Slips: <?= $slip26?></li>
-                <li>40 ft Slips: <?= $slip40?></li>
-                <li>50 ft Slips: <?= $slip50?></li>
+        <section class="info-box">
+            <h2><i class="fa-solid fa-anchor"></i> Current Wait List Summary</h2>
+            <p>The current number of boats waiting for each slip size is shown below. Please check back regularly for availability.</p>
+            <ul id="waitlistCounts" style="list-style: none; padding-left: 0; font-size: 1.1em; margin-top: 1em;">
+                <li><strong>26 ft Slips:</strong> <?= $slip26 ?></li>
+                <li><strong>40 ft Slips:</strong> <?= $slip40 ?></li>
+                <li><strong>50 ft Slips:</strong> <?= $slip50 ?></li>
             </ul>
         </section>
     </main>
+
     <footer>
         <p>© 2025 Moffat Bay Marina</p>
     </footer>
